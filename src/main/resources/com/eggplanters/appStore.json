@@ -1,0 +1,90 @@
+[
+  {
+    "title": "Skyward Realms",
+    "publisher": "Aether Arc Studios",
+    "genre": "Fantasy Strategy",
+    "description": "In Skyward Realms, players build and manage floating islands, forge alliances, and conquer new territories in the sky. Use your strategic skills to gather resources and expand your empire while defending against rival kingdoms.",
+    "star_rating": 4.5,
+    "downloads": 1250000
+  },
+  {
+    "title": "Pixel Pirates: Ocean Plunder",
+    "publisher": "RetroMarauder Games",
+    "genre": "Retro Adventure",
+    "description": "A retro pixel-art pirate game where players command a pirate crew, battle sea monsters, and hunt for hidden treasures across 8-bit oceans. Navigate dangerous waters and build the most notorious pirate empire.",
+    "star_rating": 4.0,
+    "downloads": 980000
+  },
+  {
+    "title": "Mecha Clash: Neon Wars",
+    "publisher": "NeonCircuit Interactive",
+    "genre": "Sci-Fi Action RPG",
+    "description": "Enter a dystopian future where you control giant mech warriors in high-stakes, neon-lit city battles. Customize your mecha with advanced weaponry and fight through epic story missions or online multiplayer combat.",
+    "star_rating": 4.2,
+    "downloads": 850000
+  },
+  {
+    "title": "Mystic Forest Escape",
+    "publisher": "Dreamgate Interactive",
+    "genre": "Puzzle Adventure",
+    "description": "Solve intricate puzzles and unlock magical mysteries as you journey through an enchanted forest. Mystic Forest Escape blends mind-bending challenges with a rich narrative and stunning visuals.",
+    "star_rating": 4.8,
+    "downloads": 2400000
+  },
+  {
+    "title": "Galaxy Drift Racers",
+    "publisher": "Hypernova Studios",
+    "genre": "Space Racing",
+    "description": "Race through the galaxy in high-speed spacecraft, dodging asteroids and navigating gravity wells. With deep customization, intense multiplayer modes, and stunning cosmic tracks, become the galaxy's top racer.",
+    "star_rating": 4.6,
+    "downloads": 1500000
+  },
+  {
+    "title": "Zombie Bunker Defense",
+    "publisher": "Apocalypse Arts",
+    "genre": "Tower Defense",
+    "description": "Defend your bunker from endless waves of zombies. Strategically place turrets, traps, and upgrade defenses in this intense, survival-driven tower defense game.",
+    "star_rating": 3.9,
+    "downloads": 720000
+  },
+  {
+    "title": "Elemental Heroes: Battle Forge",
+    "publisher": "Fireforge Games",
+    "genre": "Fantasy RPG",
+    "description": "Summon elemental warriors, forge legendary weapons, and engage in turn-based combat with mythical creatures. Build your hero's team and face epic bosses in this tactical fantasy RPG.",
+    "star_rating": 4.3,
+    "downloads": 1130000
+  },
+  {
+    "title": "Crypt Crawler: Dungeon Run",
+    "publisher": "Shadowrun Studios",
+    "genre": "Dungeon Crawler",
+    "description": "Venture deep into treacherous dungeons filled with deadly traps and mythical monsters. Collect treasures, upgrade your character, and survive as long as possible in this fast-paced dungeon crawler.",
+    "star_rating": 3.8,
+    "downloads": 640000
+  },
+  {
+    "title": "Quantum Shift Puzzles",
+    "publisher": "Paradox Labs",
+    "genre": "Sci-Fi Puzzle",
+    "description": "Solve complex quantum puzzles to manipulate space and time. Each level presents a unique challenge that will push the boundaries of your logic and creativity in this sci-fi puzzle game.",
+    "star_rating": 4.7,
+    "downloads": 1350000
+  },
+  {
+    "title": "Alien Zoo Tycoon",
+    "publisher": "Cosmic Safari Studios",
+    "genre": "Simulation/Management",
+    "description": "Manage an intergalactic zoo filled with exotic alien species. Build habitats, research new creatures, and keep your guests entertained in this quirky and creative zoo management sim.",
+    "star_rating": 4.1,
+    "downloads": 890000
+  },
+  {
+    "title": "Test App",
+    "publisher": "Some Publisher",
+    "genre": "Simulation",
+    "description": "This is a test app",
+    "star_rating": 3,
+    "downloads": 1000
+  }
+]
