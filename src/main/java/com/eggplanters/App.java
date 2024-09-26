@@ -33,9 +33,15 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         Scene scene = new Scene(getRoot(), 1280, 720);
-        loadApps();
+
         stage.setScene(scene);
+        stage.getScene().getStylesheets().addAll(
+                getClass().getResource("dracula-theme.css").toExternalForm()
+                ,getClass().getResource("fontstyle.css").toExternalForm());
         stage.setTitle("App Store");
+
+        loadApps();
+
         stage.show();
     }
 
@@ -127,11 +133,11 @@ public class App extends Application {
         HBox.setHgrow(textVBox,Priority.ALWAYS);
 
         Label appNameLabel = new Label(appEntry.getTitle());
-        appNameLabel.setFont(Font.font("System Bold", 18));
+        appNameLabel.getStyleClass().add("title");
         appNameLabel.setMaxWidth(Double.MAX_VALUE);
 
         Label appGenreLabel = new Label(appEntry.getPublisher() + " - " + appEntry.getGenre());
-        appGenreLabel.setFont(Font.font(12));
+        appGenreLabel.getStyleClass().add("subtitle");
         appGenreLabel.setMaxWidth(Double.MAX_VALUE);
 
         textVBox.getChildren().addAll(appNameLabel, appGenreLabel);

@@ -15,7 +15,7 @@ public class AppStoreReader {
         }
     }
 
-    private File file;
+    private final File file;
 
     public AppEntry[] parseJSON() {
         try {
