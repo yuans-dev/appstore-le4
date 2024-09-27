@@ -7,15 +7,17 @@ public class AppEntry {
     private String description;
     private double star_rating;
     private int downloads;
+    private String imageUrl;
 
     public AppEntry(String title, String publisher, String genre, String description, double star_rating,
-                    int downloads) {
+            int downloads, String imageUrl) {
         this.title = title;
         this.publisher = publisher;
         this.genre = genre;
         this.description = description;
         this.star_rating = star_rating;
         this.downloads = downloads;
+        this.imageUrl = imageUrl;
     }
 
     public String getTitle() {
@@ -64,6 +66,14 @@ public class AppEntry {
 
     public void setDownloads(int downloads) {
         this.downloads = downloads;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }

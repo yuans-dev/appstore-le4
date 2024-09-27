@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import com.eggplanters.lib.*;
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -40,9 +42,8 @@ public class App extends Application {
         stage.getIcons().add(
                 new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_icon.png"))));
 
-        loadApps();
-
         stage.show();
+        loadApps();
     }
 
     public static void main(String[] args) {
@@ -124,6 +125,7 @@ public class App extends Application {
             AppStoreReader appStoreReader = new AppStoreReader(file);
             var appEntries = appStoreReader.parseJSON();
             for (AppEntry entry : appEntries) {
+
                 addEntry(entry, appList);
             }
         } catch (NotJSONException e) {
@@ -147,9 +149,16 @@ public class App extends Application {
                 appMetricsText);
 
         HBox headerPane = new HBox(12);
-        Icon appImage = new Icon(
-                Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")),
-                156);
+
+        Icon appImage;
+        if (entry.getImageUrl() == null || entry.getImageUrl().isBlank()) {
+            appImage = new Icon(
+                    Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")),
+                    156);
+        } else {
+            appImage = new Icon(entry.getImageUrl(), 156);
+        }
+
         VBox headerText = new VBox(12);
         headerText.getChildren().addAll(appTitle, appPublisher, appGenre, appMetrics);
         headerPane.getChildren().addAll(appImage, headerText);
@@ -159,9 +168,11 @@ public class App extends Application {
         description.getStyleClass().add("description");
         description.setPadding(new Insets(36));
         description.setTextAlignment(TextAlignment.JUSTIFY);
+        description.setLineSpacing(4);
 
         appDetails.getChildren().clear();
         appDetails.getChildren().addAll(headerPane, description);
+
     }
 
     public String formatNumber(int number) {

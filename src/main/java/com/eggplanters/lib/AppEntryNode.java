@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 import java.util.Objects;
 
 public class AppEntryNode extends Button {
-    public AppEntryNode(AppEntry appEntry){
+    public AppEntryNode(AppEntry appEntry) {
 
         this.setPrefHeight(31);
         this.setMaxWidth(Double.MAX_VALUE);
@@ -21,8 +21,14 @@ public class AppEntryNode extends Button {
         buttonGraphic.setPrefSize(200, 100);
         buttonGraphic.setSpacing(12);
         buttonGraphic.setAlignment(Pos.CENTER_LEFT);
+        Image image;
+        if (appEntry.getImageUrl() == null || appEntry.getImageUrl().isBlank()) {
+            image = new Image(
+                    Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")));
+        } else {
+            image = new Image(appEntry.getImageUrl());
+        }
 
-        Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")));
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(40);
         imageView.setFitWidth(40);
