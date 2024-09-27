@@ -77,16 +77,15 @@
     "genre": "Simulation/Management",
     "description": "Manage an intergalactic zoo filled with exotic alien species. Build habitats, research new creatures, and keep your guests entertained in this quirky and creative zoo management sim.",
     "star_rating": 4.1,
-    "downloads": 890000,
-    "imageUrl":""
+    "downloads": 890000
   },
   {
-    "title": "Minecraft",
+    "title": "Minecraft (Test)",
     "publisher": "Mojang",
     "genre": "Simulation/Sandbox",
-    "description": "**This is a test app.**\n\n\tMinecraft is a sandbox game that allows players to explore procedurally generated worlds and create their own structures using various blocks. \n\n\tPlayers can gather resources, craft items, and build everything from simple houses to elaborate cities and machines. \n\n\tWith multiple game modes, including Survival, Creative, and Adventure, Minecraft offers endless possibilities for creativity and exploration.",
+    "description": "**This is a test app entry. This entry implements a way to add images to the app entries, while still using the same structure as prior app entries.**\n\nMinecraft is a sandbox game that allows players to explore procedurally generated worlds and create their own structures using various blocks. \n\nPlayers can gather resources, craft items, and build everything from simple houses to elaborate cities and machines. \n\nWith multiple game modes, including Survival, Creative, and Adventure, Minecraft offers endless possibilities for creativity and exploration.",
     "star_rating": 4.9,
     "downloads": 30000000,
-    "imageUrl":"https://seeklogo.com/images/M/minecraft-youtube-logo-448E10AC2B-seeklogo.com.png"
+    "imageUrl": "https://seeklogo.com/images/M/minecraft-youtube-logo-448E10AC2B-seeklogo.com.png"
   }
 ]

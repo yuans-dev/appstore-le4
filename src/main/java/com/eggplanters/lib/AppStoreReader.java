@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.Reader;
 
 import com.google.gson.*;
+
 public class AppStoreReader {
     public AppStoreReader(File jsonFile) throws NotJSONException {
         if (jsonFile.getName().endsWith(".json")) {
@@ -22,7 +23,7 @@ public class AppStoreReader {
             Reader reader = new FileReader(file.getAbsolutePath());
 
             Gson gson = new Gson();
-            return gson.fromJson(reader,AppEntry[].class);
+            return gson.fromJson(reader, AppEntry[].class);
 
         } catch (FileNotFoundException e) {
             System.out.println("File not found");

@@ -3,8 +3,6 @@ package com.eggplanters.lib;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -21,18 +19,15 @@ public class AppEntryNode extends Button {
         buttonGraphic.setPrefSize(200, 100);
         buttonGraphic.setSpacing(12);
         buttonGraphic.setAlignment(Pos.CENTER_LEFT);
-        Image image;
+        Icon imageView;
         if (appEntry.getImageUrl() == null || appEntry.getImageUrl().isBlank()) {
-            image = new Image(
-                    Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")));
+            imageView = new Icon(
+                    Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")), 40);
         } else {
-            image = new Image(appEntry.getImageUrl());
+            imageView = new Icon(appEntry.getImageUrl(), 40);
         }
 
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(40);
-        imageView.setFitWidth(40);
-        imageView.setPreserveRatio(true);
+        imageView.setBorderRadius(6);
 
         VBox textVBox = new VBox();
         textVBox.setPrefSize(100, 200);

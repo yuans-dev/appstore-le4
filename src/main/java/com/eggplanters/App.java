@@ -1,21 +1,18 @@
 package com.eggplanters;
 
 import java.io.File;
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.Objects;
 
 import com.eggplanters.lib.AppEntry;
 import com.eggplanters.lib.AppEntryNode;
 import com.eggplanters.lib.AppStoreReader;
-import com.eggplanters.lib.Icon;
+import com.eggplanters.lib.DetailsPane;
 import com.eggplanters.lib.NotJSONException;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -23,9 +20,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -36,21 +30,23 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
 
-        Scene scene = new Scene(createRoot(), 1280, 720);
+        Scene scene = new Scene(createRoot(), 640, 480);
         stage.setScene(scene);
 
         // Font faces are from Google Fonts
         Font.loadFont(getClass().getResourceAsStream("/com/eggplanters/Poppins.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/com/eggplanters/Poppins-Bold.ttf"), 12);
 
-        stage.getScene().getStylesheets().addAll(
-                Objects.requireNonNull(getClass().getResource("dracula-theme.css")).toExternalForm()
-                // Stylesheet provided by https://github.com/mkpaz/atlantafx
-                , Objects.requireNonNull(getClass().getResource("fontstyle.css")).toExternalForm());
+        stage.getScene().getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource("dracula-theme.css")).toExternalForm());
+        // Stylesheet provided by https://github.com/mkpaz/atlantafx, modified to fit
+        // the app
+
         stage.setTitle("Eggplanters Store");
         stage.getIcons().add(
                 new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_icon.png"))));
         loadApps();
+
         stage.show();
 
     }
@@ -63,7 +59,6 @@ public class App extends Application {
         // This method creates the base UI wherein the appStore.json file will populate
         // it.
         HBox hBox = new HBox();
-        hBox.setPrefSize(1280, 720);
 
         VBox leftVBox = new VBox();
         leftVBox.setPrefSize(300, 400);
@@ -143,55 +138,12 @@ public class App extends Application {
                 addEntry(entry, appList);
             }
         } catch (NotJSONException e) {
-            System.out.println("File is not JSON");
+            System.out.println(e.getMessage());
         }
     }
 
     public void setDetails(AppEntry entry) {
-        Label appTitle = new Label(entry.getTitle());
-        appTitle.getStyleClass().add("detail-title");
-        Label appGenre = new Label(entry.getGenre());
-        appGenre.getStyleClass().add("detail-subtitle");
-        Label appPublisher = new Label("Published by " + entry.getPublisher());
-        appPublisher.getStyleClass().add("detail-subtitle");
-        Label appMetricsText = new Label(
-                entry.getStar_rating() + " - " + formatNumber(entry.getDownloads()) + "+ downloads");
-        appMetricsText.getStyleClass().add("detail-subtitle");
-        HBox appMetrics = new HBox(12);
-        appMetrics.getChildren().addAll(
-                new Icon(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/star.png")), 18),
-                appMetricsText);
-
-        HBox headerPane = new HBox(12);
-
-        Icon appImage;
-        if (entry.getImageUrl() == null || entry.getImageUrl().isBlank()) {
-            appImage = new Icon(
-                    Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")),
-                    156);
-        } else {
-            appImage = new Icon(entry.getImageUrl(), 156);
-        }
-
-        VBox headerText = new VBox(12);
-        headerText.getChildren().addAll(appTitle, appPublisher, appGenre, appMetrics);
-        headerPane.getChildren().addAll(appImage, headerText);
-
-        TextFlow description = new TextFlow();
-        description.getChildren().add(new Text("\t" + entry.getDescription()));
-        description.getStyleClass().add("description");
-        description.setPadding(new Insets(36));
-        description.setTextAlignment(TextAlignment.JUSTIFY);
-        description.setLineSpacing(4);
-
         appDetails.getChildren().clear();
-        appDetails.getChildren().addAll(headerPane, description);
-    }
-
-    public String formatNumber(int number) {
-        // For the number of downloads, as show in the sample picture
-        NumberFormat fmt = NumberFormat.getCompactNumberInstance(
-                Locale.US, NumberFormat.Style.SHORT);
-        return fmt.format(number);
+        appDetails.getChildren().add(new DetailsPane(entry));
     }
 }
