@@ -50,9 +50,9 @@ public class App extends Application {
         stage.setTitle("Eggplanters Store");
         stage.getIcons().add(
                 new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_icon.png"))));
-
-        stage.show();
         loadApps();
+        stage.show();
+
     }
 
     public static void main(String[] args) {
