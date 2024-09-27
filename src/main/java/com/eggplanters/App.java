@@ -4,24 +4,29 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
-import com.eggplanters.lib.*;
+import com.eggplanters.lib.AppEntry;
+import com.eggplanters.lib.AppEntryNode;
+import com.eggplanters.lib.AppStoreReader;
+import com.eggplanters.lib.Icon;
+import com.eggplanters.lib.NotJSONException;
+
 import javafx.application.Application;
-import javafx.css.Stylesheet;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import javafx.geometry.Insets;
-import javafx.scene.image.Image;
 
 public class App extends Application {
 
@@ -30,10 +35,14 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
+
         Scene scene = new Scene(createRoot(), 1280, 720);
         stage.setScene(scene);
+
+        // Font faces are from Google Fonts
         Font.loadFont(getClass().getResourceAsStream("/com/eggplanters/Poppins.ttf"), 12);
         Font.loadFont(getClass().getResourceAsStream("/com/eggplanters/Poppins-Bold.ttf"), 12);
+
         stage.getScene().getStylesheets().addAll(
                 Objects.requireNonNull(getClass().getResource("dracula-theme.css")).toExternalForm()
                 // Stylesheet provided by https://github.com/mkpaz/atlantafx
@@ -51,6 +60,8 @@ public class App extends Application {
     }
 
     public Parent createRoot() {
+        // This method creates the base UI wherein the appStore.json file will populate
+        // it.
         HBox hBox = new HBox();
         hBox.setPrefSize(1280, 720);
 
@@ -110,6 +121,8 @@ public class App extends Application {
         AppEntryNode node = new AppEntryNode(appEntry);
         node.setOnAction((e) -> {
             setDetails(appEntry);
+
+            // Sets the clicked entry as selected
             for (var appEntries : appList.getChildren()) {
                 appEntries.getStyleClass().removeIf((s) -> s.equals("selected"));
             }
@@ -120,6 +133,7 @@ public class App extends Application {
     }
 
     public void loadApps() {
+
         File file = new File("src/main/resources/com/eggplanters/appStore.json");
         try {
             AppStoreReader appStoreReader = new AppStoreReader(file);
@@ -172,10 +186,10 @@ public class App extends Application {
 
         appDetails.getChildren().clear();
         appDetails.getChildren().addAll(headerPane, description);
-
     }
 
     public String formatNumber(int number) {
+        // For the number of downloads, as show in the sample picture
         NumberFormat fmt = NumberFormat.getCompactNumberInstance(
                 Locale.US, NumberFormat.Style.SHORT);
         return fmt.format(number);
