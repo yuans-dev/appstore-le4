@@ -1,70 +1,57 @@
 package com.eggplanters;
 
 import java.io.File;
-import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Objects;
 
-import com.eggplanters.lib.AppEntry;
-import com.eggplanters.lib.AppStoreReader;
-import com.eggplanters.lib.NotJSONException;
+import com.eggplanters.lib.*;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
 
 public class App extends Application {
 
-    private static Scene scene;
     private VBox appList;
     private VBox appDetails;
 
     @Override
-    public void start(Stage stage) throws IOException {
-        Scene scene = new Scene(getRoot(), 1280, 720);
-
+    public void start(Stage stage) {
+        Scene scene = new Scene(createRoot(), 1280, 720);
         stage.setScene(scene);
         stage.getScene().getStylesheets().addAll(
-                getClass().getResource("dracula-theme.css").toExternalForm()
-                ,getClass().getResource("fontstyle.css").toExternalForm());
-        stage.setTitle("App Store");
+                Objects.requireNonNull(getClass().getResource("dracula-theme.css")).toExternalForm()
+                //Stylesheet provided by https://github.com/mkpaz/atlantafx
+                , Objects.requireNonNull(getClass().getResource("fontstyle.css")).toExternalForm());
+        stage.setTitle("Eggplanters Store");
+        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_icon.png"))));
 
         loadApps();
 
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
     public static void main(String[] args) {
         launch();
     }
 
-    public Parent getRoot() {
+    public Parent createRoot() {
         HBox hBox = new HBox();
         hBox.setPrefSize(1280, 720);
 
         VBox leftVBox = new VBox();
         leftVBox.setPrefSize(300, 400);
         leftVBox.setMinSize(300,Region.USE_COMPUTED_SIZE);
+        leftVBox.setMaxSize(400,Region.USE_COMPUTED_SIZE);
         HBox.setHgrow(leftVBox, Priority.ALWAYS);
 
         ScrollPane scrollPane = new ScrollPane();
@@ -103,50 +90,27 @@ public class App extends Application {
         detailsScrollPane.setContent(appDetails);
         rightVBox.getChildren().add(detailsScrollPane);
 
-        hBox.getChildren().addAll(leftVBox, rightVBox); // Empty right VBox for layout
-        return hBox;
+        hBox.getChildren().addAll(leftVBox, rightVBox);
+
+        VBox parent = new VBox();
+        parent.getChildren().addAll(hBox);
+        VBox.setVgrow(hBox,Priority.ALWAYS);
+        parent.getStyleClass().add("parent");
+        return parent;
     }
 
     public void addEntry(AppEntry appEntry, VBox appList) {
-        // Create the Button
-        Button button = new Button();
-        button.setPrefHeight(31);
-        button.setOnAction((e)->{
+
+        AppEntryNode node = new AppEntryNode(appEntry);
+        node.setOnAction((e)-> {
             setDetails(appEntry);
+            for(var appEntries:appList.getChildren()){
+                appEntries.getStyleClass().removeIf((s)-> s.equals("selected"));
+            }
+            node.getStyleClass().add("selected");
         });
 
-        button.setMaxWidth(Double.MAX_VALUE);
-
-        HBox buttonGraphic = new HBox();
-        buttonGraphic.setPrefSize(200, 100);
-        buttonGraphic.setSpacing(12);
-        buttonGraphic.setAlignment(Pos.CENTER_LEFT);
-
-        Image image = new Image(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png"));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(40);
-        imageView.setFitWidth(40);
-        imageView.setPreserveRatio(true);
-
-        VBox textVBox = new VBox();
-        textVBox.setPrefSize(100, 200);
-        HBox.setHgrow(textVBox,Priority.ALWAYS);
-
-        Label appNameLabel = new Label(appEntry.getTitle());
-        appNameLabel.getStyleClass().add("title");
-        appNameLabel.setMaxWidth(Double.MAX_VALUE);
-
-        Label appGenreLabel = new Label(appEntry.getPublisher() + " - " + appEntry.getGenre());
-        appGenreLabel.getStyleClass().add("subtitle");
-        appGenreLabel.setMaxWidth(Double.MAX_VALUE);
-
-        textVBox.getChildren().addAll(appNameLabel, appGenreLabel);
-
-        buttonGraphic.getChildren().addAll(imageView, textVBox);
-
-        button.setGraphic(buttonGraphic);
-
-        appList.getChildren().add(button);
+        appList.getChildren().add(node);
     }
 
     public void loadApps() {
@@ -163,11 +127,36 @@ public class App extends Application {
     }
     public void setDetails(AppEntry entry){
         Label appTitle = new Label(entry.getTitle());
+        appTitle.getStyleClass().add("detail-title");
         Label appGenre = new Label(entry.getGenre());
-        Label appPublisher = new Label(entry.getPublisher());
-        Label appRating = new Label(Double.toString(entry.getStar_rating()));
-        Label appDownloads = new Label(Integer.toString(entry.getDownloads()));
+        appGenre.getStyleClass().add("detail-subtitle");
+        Label appPublisher = new Label("Published by " + entry.getPublisher());
+        appPublisher.getStyleClass().add("detail-subtitle");
+        Label appMetricsText = new Label(entry.getStar_rating() + " - "+formatNumber(entry.getDownloads()) + "+ downloads");
+        appMetricsText.getStyleClass().add("detail-subtitle");
+        HBox appMetrics = new HBox(12);
+        appMetrics.getChildren().addAll(new Icon(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/star.png")),18),appMetricsText);
+
+        HBox headerPane = new HBox(12);
+        Icon appImage = new Icon(
+                Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")),
+                156);
+        VBox headerText = new VBox(12);
+        headerText.getChildren().addAll(appTitle,appPublisher,appGenre, appMetrics);
+        headerPane.getChildren().addAll(appImage, headerText);
+
+        TextFlow description = new TextFlow();
+        description.getChildren().add(new Text("\t"+entry.getDescription()));
+        description.getStyleClass().add("description");
+        description.setPadding(new Insets(36));
+        description.setTextAlignment(TextAlignment.JUSTIFY);
+
         appDetails.getChildren().clear();
-        appDetails.getChildren().addAll(appTitle, appGenre,appPublisher,appRating,appDownloads);
+        appDetails.getChildren().addAll(headerPane, description);
+    }
+    public String formatNumber(int number) {
+        NumberFormat fmt = NumberFormat.getCompactNumberInstance(
+                Locale.US, NumberFormat.Style.SHORT);
+        return fmt.format(number);
     }
 }

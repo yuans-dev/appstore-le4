@@ -4666,3 +4666,17 @@ Add support for NO_HEADER tweak in tables .table-view.no-header > .column-header
   -fx-opacity: 0.85;
   -fx-effect: dropshadow(three-pass-box, -color-shadow-default, 8px, 0.6, 0, 2);
 }
+
+.button.selected{
+  -fx-background-color: -color-accent-6;
+}
+.parent{
+
+-fx-border-color: -color-border-subtle;
+
+}
+.windows-button{
+    -fx-background-color: transparent;
+    -fx-focus-color: transparent;
+
+}

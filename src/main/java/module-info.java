@@ -3,7 +3,6 @@ module com.eggplanters {
     requires javafx.fxml;
     requires com.google.gson;
 
-
     exports com.eggplanters;
     exports com.eggplanters.lib;
     opens com.eggplanters to javafx.fxml;

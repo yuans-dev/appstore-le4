@@ -12,9 +12,31 @@
     -fx-font-size: 18;
     -fx-font-weight: bold;
 }
+.label.detail-title{
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+}
 .label.subtitle{
 -fx-font-family: 'Poppins';
 -fx-font-size: 12;
 -fx-opacity: 0.5;
 }
+.label.detail-subtitle{
+-fx-font-family: 'Poppins';
+-fx-font-size: 14;
+-fx-opacity: 0.5;
+}
+.title-bar{
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.description{
+-fx-font-family: 'Poppins';
+    -fx-font-size: 18;
+
+}
+
 
