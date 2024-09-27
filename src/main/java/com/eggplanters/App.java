@@ -7,11 +7,13 @@ import java.util.Objects;
 
 import com.eggplanters.lib.*;
 import javafx.application.Application;
+import javafx.css.Stylesheet;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -28,12 +30,15 @@ public class App extends Application {
     public void start(Stage stage) {
         Scene scene = new Scene(createRoot(), 1280, 720);
         stage.setScene(scene);
+        Font.loadFont(getClass().getResourceAsStream("/com/eggplanters/Poppins.ttf"), 12);
+        Font.loadFont(getClass().getResourceAsStream("/com/eggplanters/Poppins-Bold.ttf"), 12);
         stage.getScene().getStylesheets().addAll(
                 Objects.requireNonNull(getClass().getResource("dracula-theme.css")).toExternalForm()
-                //Stylesheet provided by https://github.com/mkpaz/atlantafx
+                // Stylesheet provided by https://github.com/mkpaz/atlantafx
                 , Objects.requireNonNull(getClass().getResource("fontstyle.css")).toExternalForm());
         stage.setTitle("Eggplanters Store");
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_icon.png"))));
+        stage.getIcons().add(
+                new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_icon.png"))));
 
         loadApps();
 
@@ -50,8 +55,8 @@ public class App extends Application {
 
         VBox leftVBox = new VBox();
         leftVBox.setPrefSize(300, 400);
-        leftVBox.setMinSize(300,Region.USE_COMPUTED_SIZE);
-        leftVBox.setMaxSize(400,Region.USE_COMPUTED_SIZE);
+        leftVBox.setMinSize(300, Region.USE_COMPUTED_SIZE);
+        leftVBox.setMaxSize(400, Region.USE_COMPUTED_SIZE);
         HBox.setHgrow(leftVBox, Priority.ALWAYS);
 
         ScrollPane scrollPane = new ScrollPane();
@@ -69,9 +74,9 @@ public class App extends Application {
 
         leftVBox.getChildren().add(scrollPane);
 
-        //Details
+        // Details
         VBox rightVBox = new VBox();
-        HBox.setHgrow(rightVBox,Priority.ALWAYS);
+        HBox.setHgrow(rightVBox, Priority.ALWAYS);
         rightVBox.setPrefSize(700, 400);
 
         ScrollPane detailsScrollPane = new ScrollPane();
@@ -94,7 +99,7 @@ public class App extends Application {
 
         VBox parent = new VBox();
         parent.getChildren().addAll(hBox);
-        VBox.setVgrow(hBox,Priority.ALWAYS);
+        VBox.setVgrow(hBox, Priority.ALWAYS);
         parent.getStyleClass().add("parent");
         return parent;
     }
@@ -102,10 +107,10 @@ public class App extends Application {
     public void addEntry(AppEntry appEntry, VBox appList) {
 
         AppEntryNode node = new AppEntryNode(appEntry);
-        node.setOnAction((e)-> {
+        node.setOnAction((e) -> {
             setDetails(appEntry);
-            for(var appEntries:appList.getChildren()){
-                appEntries.getStyleClass().removeIf((s)-> s.equals("selected"));
+            for (var appEntries : appList.getChildren()) {
+                appEntries.getStyleClass().removeIf((s) -> s.equals("selected"));
             }
             node.getStyleClass().add("selected");
         });
@@ -118,35 +123,39 @@ public class App extends Application {
         try {
             AppStoreReader appStoreReader = new AppStoreReader(file);
             var appEntries = appStoreReader.parseJSON();
-            for(AppEntry entry : appEntries){
+            for (AppEntry entry : appEntries) {
                 addEntry(entry, appList);
             }
         } catch (NotJSONException e) {
             System.out.println("File is not JSON");
         }
     }
-    public void setDetails(AppEntry entry){
+
+    public void setDetails(AppEntry entry) {
         Label appTitle = new Label(entry.getTitle());
         appTitle.getStyleClass().add("detail-title");
         Label appGenre = new Label(entry.getGenre());
         appGenre.getStyleClass().add("detail-subtitle");
         Label appPublisher = new Label("Published by " + entry.getPublisher());
         appPublisher.getStyleClass().add("detail-subtitle");
-        Label appMetricsText = new Label(entry.getStar_rating() + " - "+formatNumber(entry.getDownloads()) + "+ downloads");
+        Label appMetricsText = new Label(
+                entry.getStar_rating() + " - " + formatNumber(entry.getDownloads()) + "+ downloads");
         appMetricsText.getStyleClass().add("detail-subtitle");
         HBox appMetrics = new HBox(12);
-        appMetrics.getChildren().addAll(new Icon(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/star.png")),18),appMetricsText);
+        appMetrics.getChildren().addAll(
+                new Icon(Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/star.png")), 18),
+                appMetricsText);
 
         HBox headerPane = new HBox(12);
         Icon appImage = new Icon(
                 Objects.requireNonNull(getClass().getResourceAsStream("/com/eggplanters/app_placeholder.png")),
                 156);
         VBox headerText = new VBox(12);
-        headerText.getChildren().addAll(appTitle,appPublisher,appGenre, appMetrics);
+        headerText.getChildren().addAll(appTitle, appPublisher, appGenre, appMetrics);
         headerPane.getChildren().addAll(appImage, headerText);
 
         TextFlow description = new TextFlow();
-        description.getChildren().add(new Text("\t"+entry.getDescription()));
+        description.getChildren().add(new Text("\t" + entry.getDescription()));
         description.getStyleClass().add("description");
         description.setPadding(new Insets(36));
         description.setTextAlignment(TextAlignment.JUSTIFY);
@@ -154,6 +163,7 @@ public class App extends Application {
         appDetails.getChildren().clear();
         appDetails.getChildren().addAll(headerPane, description);
     }
+
     public String formatNumber(int number) {
         NumberFormat fmt = NumberFormat.getCompactNumberInstance(
                 Locale.US, NumberFormat.Style.SHORT);
